@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block nav1 %}
+    <a class="nav-item nav-link color3" href="{{ url_for('add',id=id,c_id=c_id) }}" role="tab"
+       aria-controls="nav-profile" aria-selected="true"><i class="fa fa-hand-pointer-o"> incomplete</i></a>
+    <a class="nav-item nav-link color3 active" href="{{ url_for('complete',id=id,c_id=c_id) }}" role="tab"
+       aria-controls="nav-profile" aria-selected="false"><i class="fa fa-thumbs-o-up"> complete</i></a>
+{% endblock %}
+
+{% block sort %}
+    <a href="{{ url_for('sort_cas',id=id,c_id=c_id) }}"> <i id="Ascending"
+                                                            class="fa fa fa-sort-amount-asc text-info btn mx-0 px-0 pl-1 "
+                                                            data-toggle="tooltip" data-placement="bottom"
+                                                            title="Ascending"></i></a>
+    <a href="{{ url_for('sort_cds',id=id,c_id=c_id) }}"> <i id="Descending"
+                                                            class="fa fa fa-sort-amount-desc text-info btn mx-0 px-0 pl-1 "
+                                                            data-toggle="tooltip" data-placement="bottom"
+                                                            title="Descending"></i></a>
+{% endblock %}
+
+{% block form %}
+    <form class="col col-11 offset-1" action="{{ url_for('search_c',id=id,type="None",keyword="NULL",c_id=c_id) }}"
+          method="POST">
+{% endblock %}
+</form>
+
+  <!-- Todo list section -->
+
+{% block show %}
+
+    <div class="row">
+        <div class="col col-auto my-auto p-10 mx-auto">
+            <div class="category1">
+                {% for category in categories %}
+                    <p class="categories card my-3  mx-2">
+
+                        <a href="{{ url_for('complete',id=id,c_id=category.id) }}"
+                           class="nav-link color3 text-center {% if category == category_now %}active{% endif %}">{{ category.name }}
+                            <a class="dc" href="{{ url_for('delete_category',id=id,c_id=category.id) }}"><i
+                                    class="fa fa-trash-o text-danger btn p-0" data-toggle="tooltip"
+                                    data-placement="bottom" title="Delete Category"></i></a></a>
+
+                    </p>
+
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col col-auto mx-auto">
+            {% for item in items %}
+                <div>
+                <p class="card" id="item{{ loop.index }}">
+                    {% if item.priority =="Medium" %}
+                        <div class="row px-3 align-items-center todo-item editing rounded bg-warning bg-gradient"
+                             data-toggle="tooltip" data-placement="bottom" title="Priority: Medium">
+                    {% elif item.priority =="High" %}
+                        <div class="row px-3 align-items-center todo-item editing rounded warning bg-gradient"
+                             data-toggle="tooltip" data-placement="bottom" title="Priority: High">
+                    {% else %}
+                        <div class="row px-3 align-items-center todo-item editing rounded bg-success bg-gradient"
+                             data-toggle="tooltip" data-placement="bottom" title="Priority: Low">
+                    {% endif %}
+                    <div class="col-auto d-flex align-items-center ">
+                        <h2 class=" ml-2 mt-2  p-0">
+                            <a href="{{ url_for('indone',id=item.id,c_id=c_id) }}">
+                                <i class="check1 fa fa-refresh text-primary btn m-0 p-0" data-toggle="tooltip"
+                                   data-placement="bottom" title="Mark as complete"></i>
+                            </a>
+                        </h2>
+                    </div>
+
+                    <div class="col-3 ml-0 px-1  d-flex align-items-center ">
+
+                        <del><input id="form1{{ loop.index }}" type="text"
+                                    class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3"
+                                    readonly="readonly" value="{{ item.a_name }}"/></del>
+
+
+                    </div>
+
+                    <div class="col-3 ml-0 px-1  d-flex align-items-center overflow-hidden">
+                        <i id="{{ loop.index }}" class="fa fa-plus-square-o desc a5">Description</i>
+
+                    </div>
+
+                    <div class="col-auto m-1 p-0 px-3 ">
+                        <div class="row ">
+                            <div class="col-auto d-flex align-items-center rounded bg-white border border-warning">
+                                <i class="fa fa-hourglass-2 my-2 px-2 text-warning btn due-date-button11"
+                                   id="due-date-button1{{ loop.index }}" data-toggle="tooltip" data-placement="bottom"
+                                   title="" data-original-title="Due on date"></i>
+                                {% if item.ddl != "date" %}
+                                    <h12 id="date33{{ loop.index }}" class="text my-2 pr-2">{{ item.ddl }}</h12>
+                                {% else %}
+                                    <h12 id="date33{{ loop.index }}" class="text my-2 pr-2">There was no ddl...</h12>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-auto  m-1 ml-3 p-0 todo-actions">
+                        <div class="row d-flex justify-content-center ml-4">
+                            <h5 class="m-0 p-0 px-2">
+                                <a> <i id="{{ loop.index }}" class="fa fa-pencil text-info btn m-0 p-0 edit-btn"
+                                       data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i></a>
+                            </h5>
+                            <h5 class="m-0 p-0 px-2">
+                                <a href="{{ url_for('deleteitem_c',id=item.id, c_id=c_id) }}"><i
+                                        class="fa fa-trash-o text-danger btn m-0 p-0" data-toggle="tooltip"
+                                        data-placement="bottom" title="Delete todo"></i></a>
+                            </h5>
+                        </div>
+                        <div class="row todo-created-info">
+                            <div class="col-auto ml-3 d-flex align-items-center pr-2">
+                                <i class="fa fa-info-circle my-2 px-2 text-black-50 btn" data-toggle="tooltip"
+                                   data-placement="bottom" title="" data-original-title="Created date"></i>
+                                <label id="label1{{ loop.index }}"
+                                       class="date-label my-2 text-black-50">{{ item.setdate }}</label>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="alert-success row ml-0 px-1 d-flex align-items-center">
+                        <textarea id="des1{{ loop.index }}" type="text"
+                                  class="edit-form form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3"
+                                  readonly="readonly"/>{{ item.des }} </textarea>
+                    </div>
+                    <div id="line1{{ loop.index }}" class="line p-2 mb-5 border-black-25 border-bottom"></div>
+                    <form class=" edit-form " id="form{{ loop.index }}"
+                          action="{{ url_for('edit_item_c', id=item.id,c_id=c_id) }}" method="POST">
+                        <div class="row">
+                            <select class="col col-2 offset-2 form-control .form-control-lg select1 border-0 add-todo-input rounded"
+                                    data-toggle="tooltip" data-placement="bottom" title="Priority" name="pri">
+                                {% if item.priority =="High" %}
+                                    <option value="High" selected class="select1">High</option>
+                                    <option value="Medium" class="select1">Medium</option>
+                                    <option value="Low" class="select1">Low</option>
+                                {% elif item.priority =="Medium" %}
+                                    <option value="High">High</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="Low">Low</option>
+                                {% else %}
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low" selected>Low</option>
+                                {% endif %}
+                            </select>
+                            <a href="#" class="offset-1 col col-2 btn confirm-btn  color1" id="a1{{ loop.index }}">Submit</a>
+                            <a class="offset-1 col col-2 btn cancel-btn color2">Cancle</a>
+                            <input id="date222{{ loop.index }}" name="setdate" class="d-none"
+                                   value="{{ item.setdate }}">
+                            <input id="date2222{{ loop.index }}" name="ddl" class="d-none" value="{{ item.ddl }}">
+                            <input id="date22222{{ loop.index }}" name="big" class="d-none" value="{{ item.big }}">
+                            <input id="date222222{{ loop.index }}" name="create" class="d-none"
+                                   value="{{ item.create }}">
+                            <input id=word{{ loop.index }} name="a_name" class="d-none" value="">
+                            <input id="des2{{ loop.index }}" name="des" class="d-none" value="">
+
+                        </div>
+                    </form>
+                    <div class="p-2 mb-0 border-black-25 border-bottom"></div>
+                    </p>
+
+                    </div>
+
+            {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>
+    {% for category,message in get_flashed_messages(with_categories = true) %}
+        {% if category =="searcherror" %}
+            <p class="alert alert-danger">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+
+      <!-- Nav section -->
+
+    <nav>
+        <ul class="pagination">
+
+            {% if pagination.has_prev %}
+                <li class="page-item active"><a class="page-link"
+                                                href="{{ url_for('search_c',id=id,c_id=c_id,page=pagination.page-1,type=type,keyword=keyword) }}">Former</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Former</a></li>
+            {% endif %}
+
+            {% for page in pagination.iter_pages(1,1,3,1) %}
+                {% if page %}
+                    <li class="page-item {% if page==pagination.page %}active{% endif %}"><a class="page-link"
+                                                                                             href="{{ url_for('search_c',id=id,c_id=c_id,page=page,type=type,keyword=keyword) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">&hellip;</a></li>
+                {% endif %}
+
+            {% endfor %}
+
+            {% if pagination.has_next %}
+                <li class="page-item active"><a class="page-link" href="
+                        {{ url_for('search_c',id=id,c_id=c_id,page=pagination.page+1,type=type,keyword=keyword)}}">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+
+{% endblock %}

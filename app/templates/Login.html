@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../static/cssfiles/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <script src="../static/cssfiles/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/cssfiles/style.css" type="text/css">
+    <script src="../static/js/jquery-3.6.0.js"></script>
+    <meta name="Keywords" content="Login, login">
+    <meta name="Description" content="The login page">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Robots" content="all">
+    <meta name="Author" content="Shawn,sc20xj@leeds.ac.uk">
+    <title>Login</title>
+</head>
+
+<body class="body2">
+{% for category,message in get_flashed_messages(with_categories = true) %}
+    {% if category =="error" %}
+        <p class="alert alert-danger alert">{{ message }}</p>
+    {% else %}
+        <p class="alert alert-success alert">{{ message }}</p>
+    {% endif %}
+{% endfor %}
+
+
+{% for e in form.Name.errors %}
+    <div class="alert alert-danger mb-0">
+        {{ e }}
+    </div>
+{% endfor %}
+{% for e in form.Email.errors %}
+    <div class="alert alert-danger mb-0">
+        {{ e }}
+    </div>
+{% endfor %}
+{% for e in form.Password.errors %}
+    <div class="alert alert-danger mb-0">
+        {{ e }}
+    </div>
+{% endfor %}
+
+<div class="container1 right-panel-active">
+    <!-- Sign Up -->
+    <div class="container1__form container1--signup">
+
+        <form action="{{ url_for('show') }}" method="post" class="form" id="form1">
+            {{ form.hidden_tag() }}
+
+            <h2 class="form__title">Register</h2>
+            <div>
+                <img src="../static/img/user.png" class="p1" alt="">
+                {{ form.Name(class="input",placeholder="Username") }}
+
+            </div>
+
+
+            <div>
+                <img src="./../static/img/user.png" class="p1" alt="">
+                {{ form.Email(class="input",placeholder="Email") }}
+            </div>
+
+
+            <div>
+                <img src="./../static/img/passwd.png" class="p1" alt="">
+                {{ form.Password(class="input",placeholder="Password") }}
+            </div>
+
+
+            <input type="submit" class="btn1" value="Submit">
+
+        </form>
+    </div>
+
+    <!-- Sign In -->
+    <div class="container1__form container1--signin">
+        <form action="{{ url_for('Login') }}" class="form" id="form2" method="post">
+            {{ form2.hidden_tag() }}
+            <h2 class="form__title">Sign In</h2>
+            <div class="user1">
+                <img src="../static/img/user.png" class="p1" alt="">
+                {{ form2.Name(class="input",placeholder="Username") }}
+            </div>
+            <div>
+                <img src="./../static/img/passwd.png" class="p1" alt="">
+                {{ form2.Password(class="input",placeholder="Password") }}
+            </div>
+            <p class="">
+                <input type="checkbox" class="box">
+                <h11 class="word">Remember me for 30 days</h11>
+            </p>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <!-- Overlay -->
+    <div class="container1__overlay">
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button class="btnL" id="signIn">Sign In</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button class="btnL" id="signUp">Register</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="../static/js/Login.js"></script>
+</body>
+</html>
